@@ -2,7 +2,7 @@ import Brand from '../models/brand.js';
 import product from '../models/Product.js';
 import products from '../models/Product.js';
 
-async function createnewBrand(req, res, next) {
+async function createNewBrand(req, res, next) {
   try {
     const newBrand = await Brand.create(req.body);
 
@@ -60,7 +60,7 @@ async function deleteBrand(req, res, next) {
 console.log('Brand.js is here');
 
 export default {
-  createnewBrand,
+  createNewBrand,
   getAllBrands,
   getAllProductsForBrand,
   deleteBrand

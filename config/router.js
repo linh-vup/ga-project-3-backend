@@ -1,4 +1,6 @@
 import express from 'express';
+import brandController from '../controllers/brandController';
+import secureRoute from '../middleware/secureRoute';
 import productsController from '../controllers/productsController.js';
 import UserController from '../controllers/UserController.js';
 
@@ -13,7 +15,9 @@ Router.route('/products/:id')
   .put(productsController.updateSingleProduct)
   .delete(productsController.deleteSingleProduct);
 
-Router.route('/brands');
+Router.route('/brands')
+  .get(brandController.getAllBrands)
+  .post(secureRoute, brandController.createNewBrand);
 
 Router.route('/profile/:userId').get(UserController.singleUserProfile);
 
