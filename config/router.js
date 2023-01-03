@@ -6,4 +6,6 @@ Router.route('/products');
 
 Router.route('/brands');
 
+Router.route('/login');
+
 export default Router;
