@@ -3,7 +3,7 @@ import mongooseUniqueValidator from 'mongoose-unique-validator';
 
 const reviewSchema = new mongoose.Schema({
   text: { type: String, required: true, max: 300 },
-  reviewer: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
+  // reviewer: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
   rating: { type: Number, min: 1, max: 5, required: true }
 });
 
@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema({
   type: { type: String, required: true },
   image: { type: String, required: true },
   rating: { type: Number, min: 1, max: 5 },
-  addedBy: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
+  // addedBy: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
+  addedBy: { type: mongoose.Schema.ObjectId, ref: 'User' },
   brand: { type: mongoose.Schema.ObjectId, ref: 'Brand' },
   reviews: [reviewSchema]
 });

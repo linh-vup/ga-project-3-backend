@@ -1,0 +1,125 @@
+import Product from '../models/product.js';
+import Brand from '../models/brand.js';
+
+const getAllProducts = async (_req, res, next) => {
+  try {
+    const products = await Product.find();
+    return res.status(200).json(products);
+  } catch (err) {
+    next(err);
+  }
+};
+
+async function searchProducts(req, res, next) {
+  console.log(req.query);
+  try {
+    // search multiple keys:
+    const { search } = req.query;
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { type: { $regex: search, $options: 'i' } },
+        { brand: { $regex: search, $options: 'i' } }
+      ]
+    });
+
+    // where we dynamically add the search query and the search query value
+    // const { searchBy, value } = req.query;
+    // const products = await Product.find({
+    //   [searchBy]: { $regex: value, $options: 'i' }
+    // });
+
+    return res.status(200).json(products);
+  } catch (error) {
+    next(error);
+  }
+}
+
+const createNewProduct = async (req, res, next) => {
+  console.log('CURRENT USER', req.currentUser);
+  try {
+    const product = await Product.create({
+      ...req.body
+      // addedBy: req.currentUser._id
+    });
+
+    await Brand.findOneAndUpdate(
+      { _id: product.brand },
+      { $push: { products: product._id } }
+    );
+
+    return res.status(201).json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getSingleProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id).populate('brand');
+    // .populate('reviews.reviewer');
+    return product
+      ? res.status(200).json(product)
+      : res
+          .status(404)
+          .json({ message: `no product with id ${req.params.id}` });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateSingleProduct = async (req, res, next) => {
+  try {
+    // if (
+    //   req.currentUser._id.equals(product.addedBy) ||
+    //   req.currentUser.isAdmin
+    // ) {
+    //   const product = await Product.findById(req.params.id);
+    //   product.set(req.body);
+    //   const updatedProduct = await product.save();
+    //   return res.status(200).json(updatedProduct);
+    // }
+
+    // return res.status(301).json({ message: 'Unauthorised' });
+
+    const product = await Product.findById(req.params.id);
+    product.set(req.body);
+    const updatedProduct = await product.save();
+    return res.status(200).json(updatedProduct);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteSingleProduct = async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    // console.log(product.addedBy, req.currentUser._id);
+
+    // if (
+    //   req.currentUser._id.equals(product.addedBy) ||
+    //   req.currentUser.isAdmin
+    // ) {
+    //   await Product.findByIdAndDelete(req.params.id);
+    //   return res.status(200).json({ message: 'Successfully deleted product' });
+    // }
+
+    // return res.status(301).json({ message: 'Unauthorised' });
+
+    await Product.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ message: 'Successfully deleted product' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default {
+  getAllProducts,
+  createNewProduct,
+  getSingleProduct,
+  updateSingleProduct,
+  deleteSingleProduct,
+  searchProducts
+};
