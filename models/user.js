@@ -1,7 +1,8 @@
-import mongoose from ' mongoose';
+import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import mongooseHidden from 'mongoose-hidden';
-import { emailRegex } from '../lib/StringTesters';
+import { emailRegex } from '../lib/StringTesters.js';
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -10,7 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validate: (email) => emailRegex.text(email)
+    validate: (email) => emailRegex.test(email)
   },
   password: {
     type: String,
