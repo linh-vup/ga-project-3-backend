@@ -52,7 +52,7 @@ const wholeFoodsProducts = [
 
 const burgerKingVeganProducts = [
   {
-    name: 'vegan burrito',
+    name: 'Vegan Burrito',
     description: 'Has no animal products... I think',
     image:
       'https://cdn.shopify.com/s/files/1/1718/7795/articles/Veggie_Burrito.jpg?v=1616586045'
@@ -90,20 +90,20 @@ async function seedDb() {
 
   //create food catagory
   console.log('Creating catagory cheezes');
-  const catagoryCheez = await Category.create({ name: 'Cheezz' });
-  console.log('cheezes made', catagoryCheez._id);
+  const categoryCheeze = await Category.create({ name: 'Cheeze' });
+  console.log('🥪cheezes made', categoryCheeze._id);
 
   //create food catagory
-  console.log('Creating catagory cheezes');
-  const catagorymeatz = await Category.create({ name: 'meatz' });
-  console.log('meatz made', catagorymeatz._id);
+  console.log('Creating catagory Meatz');
+  const categoryMeatz = await Category.create({ name: 'Meatz' });
+  console.log('🥩meatz made', categoryMeatz._id);
 
   // create WholeFoods Products
   const updatedWholeFoodsProducts = wholeFoodsProducts.map((product) => ({
     ...product,
     addedBy: user._id,
     brand: wholeFoodsBrand._id,
-    category: catagoryCheez._id
+    category: categoryCheeze._id
   }));
 
   const wholeFoodsProductsFromDb = await Product.create(
@@ -111,8 +111,13 @@ async function seedDb() {
   );
 
   await Brand.findOneAndUpdate(
-    { _id: wholeFoodsProducts._id },
-    { $push: { brand: wholeFoodsProductsFromDb.map((b) => b._id) } }
+    { _id: wholeFoodsBrand._id },
+    { $push: { products: wholeFoodsProductsFromDb.map((b) => b._id) } }
+  );
+
+  await Category.findOneAndUpdate(
+    { _id: categoryCheeze._id },
+    { $push: { products: wholeFoodsProductsFromDb.map((b) => b._id) } }
   );
 
   //Burger King vegan
@@ -127,7 +132,7 @@ async function seedDb() {
       ...product,
       addedBy: user._id,
       brand: burgerKingBrand._id,
-      category: catagorymeatz._id
+      category: categoryMeatz._id
     })
   );
 
@@ -136,8 +141,13 @@ async function seedDb() {
   );
 
   await Brand.findOneAndUpdate(
-    { _id: burgerKingVeganProducts._id },
-    { $push: { brand: burgerKingVeganProductsFromDb.map((b) => b._id) } }
+    { _id: burgerKingBrand._id },
+    { $push: { products: burgerKingVeganProductsFromDb.map((b) => b._id) } }
+  );
+
+  await Category.findOneAndUpdate(
+    { _id: categoryMeatz._id },
+    { $push: { products: burgerKingVeganProductsFromDb.map((b) => b._id) } }
   );
 
   await disconnectDb();
