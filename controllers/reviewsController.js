@@ -1,4 +1,5 @@
 import Product from '../models/product.js';
+import User from '../models/user.js';
 
 async function createReview(req, res, next) {
   try {
@@ -14,6 +15,11 @@ async function createReview(req, res, next) {
     };
 
     product.reviews.push(newReview);
+
+    await User.findOneAndUpdate(
+      { _id: req.currentUser._id },
+      { $push: { reviews: product.reviews } }
+    );
 
     const rating =
       product.reviews.reduce((acc, review) => acc + review.rating, 0) /
@@ -50,6 +56,11 @@ async function updateReview(req, res, next) {
     }
 
     review.set(req.body);
+
+    await User.findOneAndUpdate(
+      { _id: req.currentUser._id },
+      { $push: { reviews: product.reviews } }
+    );
 
     const rating =
       product.reviews.reduce((acc, review) => acc + review.rating, 0) /
