@@ -7,20 +7,20 @@ const secureRoute = async (req, res, next) => {
     const authToken = req.headers.authorization;
 
     if (!authToken || !authToken.startsWith('Bearer')) {
-      return res.status(301).json({ message: 'Unauthorized' });
+      return res.status(301).json({ message: 'unauthorised' });
     }
 
     const token = authToken.substring(7);
 
     jwt.verify(token, SECRET, async (err, data) => {
       if (err) {
-        return res.status(301).json({ message: 'Unauthorized' });
+        return res.status(301).json({ message: 'unauthorised' });
       }
 
       const user = await User.findById(data.userId);
 
       if (!user) {
-        return res.status(301).json({ message: 'Unauthorized' });
+        return res.status(301).json({ message: 'unauthorised' });
       }
 
       req.currentUser = user;
@@ -28,7 +28,7 @@ const secureRoute = async (req, res, next) => {
       next();
     });
   } catch (e) {
-    return res.status(301).json({ message: 'Unauthorized' });
+    return res.status(301).json({ message: 'unauthorised' });
   }
 };
 
