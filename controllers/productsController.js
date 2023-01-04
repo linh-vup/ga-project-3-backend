@@ -45,6 +45,8 @@ const createNewProduct = async (req, res, next) => {
       { $push: { products: product._id } }
     );
 
+    console.log('NEW PRODUCT', product._id);
+    
     await Category.findOneAndUpdate(
       { _id: product.category },
       { $push: { products: product._id } }
