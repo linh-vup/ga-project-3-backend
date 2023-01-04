@@ -2,6 +2,7 @@ import { connectDb, disconnectDb } from './helpers.js';
 import Brand from '../models/brand.js';
 import Product from '../models/product.js';
 import User from '../models/user.js';
+import Category from '../models/category.js';
 
 const ADMIN_USER = {
   username: 'admin',
@@ -20,36 +21,31 @@ const wholeFoodsProducts = [
   {
     name: 'Veggie Taco',
     description: 'What it sounds like',
-    category: 'cheezes',
     image:
       'https://www.inspiredtaste.net/wp-content/uploads/2016/10/Veggie-Tacos-Recipe-6.jpg'
   },
   {
     name: 'Vegan Bacon',
     description:
-      'No animals were harmed in the making of this product, ony your health',
-    category: 'meat',
+      'No animals were harmed in the making of this product, only your health',
     image:
       'https://veganwithgusto.com/wp-content/uploads/2022/03/vegan-bacon-slices-on-plate.jpg'
   },
   {
     name: 'Water',
     description: 'Max vegan',
-    category: 'cheezes',
     image:
       'https://media.wired.com/photos/59548baa5578bd7594c464f5/master/pass/GettyImages-200218465-002_web.jpg'
   },
   {
     name: 'Vegan Pancakes',
     description: 'Very fluffy',
-    category: 'meat',
     image:
       'https://food-images.files.bbci.co.uk/food/recipes/vegan_american_pancakes_76094_16x9.jpg'
   },
   {
     name: `Apple`,
     description: 'No evil snake included',
-    category: 'cheezes',
     image: 'https://www.collinsdictionary.com/images/full/apple_158989157.jpg'
   }
 ];
@@ -58,7 +54,6 @@ const burgerKingVeganProducts = [
   {
     name: 'vegan burrito',
     description: 'Has no animal products... I think',
-    category: 'cheezes',
     image:
       'https://cdn.shopify.com/s/files/1/1718/7795/articles/Veggie_Burrito.jpg?v=1616586045'
   }
@@ -80,6 +75,9 @@ async function seedDb() {
   console.log('Deleting all Brands');
   await Brand.deleteMany({});
   console.log('❎ Successfully deleted brands');
+  console.log('Deleting all Categories');
+  await Category.deleteMany({});
+  console.log('❎ Successfully deleted categories');
 
   // create the users
   const [user, adminUser] = await User.create([NON_ADMIN_USER, ADMIN_USER]);
@@ -90,11 +88,22 @@ async function seedDb() {
   const wholeFoodsBrand = await Brand.create({ name: 'WholeFoods' });
   console.log('🍜 Created WholeFoods brand', wholeFoodsBrand._id);
 
+  //create food catagory
+  console.log('Creating catagory cheezes');
+  const catagoryCheez = await Category.create({ name: 'Cheezz' });
+  console.log('cheezes made', catagoryCheez._id);
+
+  //create food catagory
+  console.log('Creating catagory cheezes');
+  const catagorymeatz = await Category.create({ name: 'meatz' });
+  console.log('meatz made', catagorymeatz._id);
+
   // create WholeFoods Products
   const updatedWholeFoodsProducts = wholeFoodsProducts.map((product) => ({
     ...product,
     addedBy: user._id,
-    brand: wholeFoodsBrand._id
+    brand: wholeFoodsBrand._id,
+    category: catagoryCheez._id
   }));
 
   const wholeFoodsProductsFromDb = await Product.create(
@@ -117,7 +126,8 @@ async function seedDb() {
     (product) => ({
       ...product,
       addedBy: user._id,
-      brand: burgerKingBrand._id
+      brand: burgerKingBrand._id,
+      category: catagorymeatz._id
     })
   );
 
