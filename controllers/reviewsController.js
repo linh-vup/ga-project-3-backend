@@ -32,39 +32,23 @@ async function createReview(req, res, next) {
 async function updateReview(req, res, next) {
   try {
     const review = await Review.findById(req.params.reviewId);
-    review.set(req.body);
-    const updatedReview = await review.save();
 
-    // const product = await Product.findById(req.params.id);
+    if (!review) {
+      return res.status(404).send({ message: 'Review not found' });
+    }
+    const updatedReview = review.set(req.body);
 
-    // const singleReview = product.reviews.id(req.params.reviewId);
-    // singleReview.set(updateReview);
+    const finalReview = await review.save();
 
-    // const user = await User.findById(req.currentUser._id);
-    // const userReview = user.reviews.id(req.params.reviewId);
-    // userReview.set(updateReview);
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      { $pop: { reviews: review } },
+      { $push: { updatedReview } }
+    );
 
-    // if (!review) {
-    //   return res.status(404).send({ message: 'Review not found' });
-    // }
+    // need to update on the product
 
-    // if (!review.reviewer.equals(req.currentUser._id)) {
-    //   return res.status(301).send({
-    //     message: "Unauthorised: you cannot update another user's review"
-    //   });
-    // }
-
-    // review.set(req.body);
-
-    // const rating =
-    //   product.reviews.reduce((acc, review) => acc + review.rating, 0) /
-    //   product.reviews.length;
-
-    // product.set({ rating });
-
-    // const savedProduct = await product.save();
-
-    return res.status(200).json(updatedReview);
+    return res.status(200).json(finalReview);
   } catch (err) {
     next(err);
   }
@@ -79,6 +63,8 @@ async function deleteReview(req, res, next) {
     }
 
     const review = product.reviews.id(req.params.reviewId);
+    const user = await User.findById(req.currentUser._id);
+    const userReview = user.reviews.id(req.params.reviewId);
 
     if (!review) {
       return res.status(404).send({ message: 'Review not found' });
@@ -94,20 +80,13 @@ async function deleteReview(req, res, next) {
     }
 
     review.remove();
+    userReview.remove();
 
     review.set(req.body);
-
-    const rating =
-      product.reviews.reduce((acc, review) => acc + review.rating, 0) /
-      product.reviews.length;
-
-    if (rating) {
-      product.set({ rating });
-    } else {
-      product.rating = undefined;
-    }
+    userReview.set(req.body);
 
     const savedProduct = await product.save();
+    const saveUser = await user.save();
 
     return res.status(200).json(savedProduct);
   } catch (err) {
