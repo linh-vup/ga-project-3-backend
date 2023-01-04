@@ -4,6 +4,7 @@ import secureRoute from '../middleware/secureRoute.js';
 import productsController from '../controllers/productsController.js';
 import UserController from '../controllers/UserController.js';
 import reviewsController from '../controllers/reviewsController.js';
+import categoriesController from '../controllers/categoriesController.js';
 
 const Router = express.Router();
 
@@ -25,9 +26,23 @@ Router.route('/products/:id/reviews/:reviewId')
   .put(secureRoute, reviewsController.updateReview)
   .delete(secureRoute, reviewsController.deleteReview);
 
+Router.route('/categories')
+  .get(categoriesController.getAllCategories)
+  .post(secureRoute, categoriesController.createNewCategory);
+
+Router.route('categories/:id').delete(
+  secureRoute,
+  categoriesController.deleteCategory
+);
+
+Router.route('/categories/:id/products').get(
+  categoriesController.getAllProductsForCategory
+);
+
 Router.route('/brands')
   .get(brandController.getAllBrands)
   .post(secureRoute, brandController.createNewBrand);
+
 
 Router.route('/brands/:id').delete(secureRoute, brandController.deleteBrand);
 
