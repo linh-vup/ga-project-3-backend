@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         password
       )
   },
-  reviews: [{ type: mongoose.Types.ObjectId, ref: 'Product' }]
+  reviews: [{ type: mongoose.Types.ObjectId, ref: 'Review' }]
 });
 
 userSchema.pre('save', function encryptPassword(next) {

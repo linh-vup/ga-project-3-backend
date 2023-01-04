@@ -1,35 +1,34 @@
+import Review from '../models/reviews.js';
 import Product from '../models/product.js';
 import User from '../models/user.js';
 
 async function createReview(req, res, next) {
   try {
-    const product = await Product.findById(req.params.id);
-
-    if (!product) {
-      return res.status(404).send({ message: 'product not found' });
-    }
-
-    const newReview = {
+    const newReview = await Review.create({
       ...req.body,
       reviewer: req.currentUser._id
-    };
+    });
 
-    product.reviews.push(newReview);
+    console.log('NEW REVIEW', newReview);
+
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { reviews: newReview._id } }
+    );
+    const product = await Product.findById(req.params.id);
+
+    console.log('PRODUCT', product);
+
+    // const rating =
+    //   product.reviews.reduce((acc, review) => acc + review.rating, 0) /
+    //   product.reviews.length;
 
     await User.findOneAndUpdate(
-      { _id: req.currentUser._id },
-      { $push: { reviews: product.reviews } }
+      { _id: newReview.reviewer },
+      { $push: { reviews: newReview._id } }
     );
 
-    const rating =
-      product.reviews.reduce((acc, review) => acc + review.rating, 0) /
-      product.reviews.length;
-
-    product.set({ rating });
-
-    const savedProduct = await product.save();
-
-    return res.status(201).json(savedProduct);
+    return res.status(201).json(newReview);
   } catch (err) {
     next(err);
   }
