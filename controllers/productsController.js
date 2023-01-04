@@ -1,5 +1,6 @@
 import Product from '../models/product.js';
 import Brand from '../models/brand.js';
+import Category from '../models/category.js';
 
 const getAllProducts = async (_req, res, next) => {
   try {
@@ -41,6 +42,11 @@ const createNewProduct = async (req, res, next) => {
 
     await Brand.findOneAndUpdate(
       { _id: product.brand },
+      { $push: { products: product._id } }
+    );
+
+    await Category.findOneAndUpdate(
+      { _id: product.category },
       { $push: { products: product._id } }
     );
 
