@@ -20,7 +20,7 @@ async function searchProducts(req, res, next) {
       $or: [
         { name: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
-        { type: { $regex: search, $options: 'i' } },
+        { categories: { $regex: search, $options: 'i' } },
         { brand: { $regex: search, $options: 'i' } }
       ]
     });
