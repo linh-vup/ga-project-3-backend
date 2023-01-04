@@ -43,7 +43,7 @@ async function loginUser(req, res, next) {
 
 const singleUserProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.params.userId).populate('reviews');
     console.log(user);
     return res.status(200).json({ user });
   } catch (e) {

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
+import { SECRET } from '../config/enviroment.js';
 
 const secureRoute = async (req, res, next) => {
   try {
@@ -11,7 +12,7 @@ const secureRoute = async (req, res, next) => {
 
     const token = authToken.substring(7);
 
-    jwt.verify(token, async (err, data) => {
+    jwt.verify(token, SECRET, async (err, data) => {
       if (err) {
         return res.status(301).json({ message: 'Unauthorized' });
       }

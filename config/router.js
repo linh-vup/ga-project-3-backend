@@ -1,6 +1,6 @@
 import express from 'express';
-import brandController from '../controllers/brandController';
-import secureRoute from '../middleware/secureRoute';
+import brandController from '../controllers/brandController.js';
+import secureRoute from '../middleware/secureRoute.js';
 import productsController from '../controllers/productsController.js';
 import UserController from '../controllers/UserController.js';
 

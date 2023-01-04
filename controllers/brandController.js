@@ -1,12 +1,11 @@
 import Brand from '../models/brand.js';
-import product from '../models/Product.js';
-import products from '../models/Product.js';
+import Product from '../models/product.js';
 
 async function createNewBrand(req, res, next) {
   try {
     const newBrand = await Brand.create(req.body);
 
-    await products.updatemany(
+    await Product.updateMany(
       { _id: newBrand.products },
       { $push: { brand: newBrand._id } }
     );
@@ -41,7 +40,7 @@ async function deleteBrand(req, res, next) {
     try {
       await Brand.findByIdAndDelete(req.params.id);
 
-      const products = await product.updateMany(
+      const products = await Product.updateMany(
         { brand: req.params.id },
         { $unset: { brand: 1 } }
       );
