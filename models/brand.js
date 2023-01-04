@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 
-console.log('Brand.js');
 const brandSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
   products: [{ type: mongoose.Types.ObjectId, ref: 'Product' }]
 });
 

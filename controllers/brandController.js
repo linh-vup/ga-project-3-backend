@@ -49,7 +49,7 @@ async function deleteBrand(req, res, next) {
     next(error);
   }
 
-  return res.status(301).send({ message: 'Unathorized' });
+  return res.status(301).send({ message: 'Error deleting brand' });
 }
 
 console.log('Brand.js is here');
