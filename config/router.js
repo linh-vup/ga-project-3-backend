@@ -43,8 +43,11 @@ Router.route('/brands')
   .get(brandController.getAllBrands)
   .post(secureRoute, brandController.createNewBrand);
 
-
 Router.route('/brands/:id').delete(secureRoute, brandController.deleteBrand);
+
+Router.route('/brands/:id/products').get(
+  brandController.getAllProductsForBrand
+);
 
 Router.route('/profile/:userId').get(UserController.singleUserProfile);
 
