@@ -2,17 +2,19 @@ import Brand from '../models/brand.js';
 import Product from '../models/product.js';
 
 async function createNewBrand(req, res, next) {
-  try {
-    const newBrand = await Brand.create(req.body);
+  if (req.currentUser.isAdmin) {
+    try {
+      const newBrand = await Brand.create(req.body);
 
-    await Product.updateMany(
-      { _id: newBrand.products },
-      { $push: { brand: newBrand._id } }
-    );
+      await Product.updateMany(
+        { _id: newBrand.products },
+        { $push: { brand: newBrand._id } }
+      );
 
-    return res.status(201).json(newBrand);
-  } catch (e) {
-    next(e);
+      return res.status(201).json(newBrand);
+    } catch (e) {
+      next(e);
+    }
   }
 }
 
@@ -35,21 +37,23 @@ async function getAllProductsForBrand(req, res, next) {
 }
 
 async function deleteBrand(req, res, next) {
-  try {
-    await Brand.findByIdAndDelete(req.params.id);
+  if (req.currentUser.isAdmin) {
+    try {
+      await Brand.findByIdAndDelete(req.params.id);
 
-    const products = await Product.updateMany(
-      { brand: req.params.id },
-      { $unset: { brand: 1 } }
-    );
-    console.log({ products });
+      const products = await Product.updateMany(
+        { brand: req.params.id },
+        { $unset: { brand: 1 } }
+      );
+      console.log({ products });
 
-    return res.status(200).send({ message: 'Successfully delete Brand' });
-  } catch (error) {
-    next(error);
+      return res.status(200).send({ message: 'Successfully delete Brand' });
+    } catch (error) {
+      next(error);
+    }
+
+    return res.status(301).send({ message: 'Error deleting brand' });
   }
-
-  return res.status(301).send({ message: 'Error deleting brand' });
 }
 
 console.log('Brand.js is here');
