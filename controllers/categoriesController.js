@@ -45,7 +45,7 @@ async function deleteCategory(req, res, next) {
     try {
       await Category.findByIdAndDelete(req.params.id);
 
-      const products = await product.updateMany(
+      const products = await Product.updateMany(
         { brewery: req.params.id },
         { $unset: { category: 1 } }
         // or
@@ -53,7 +53,7 @@ async function deleteCategory(req, res, next) {
       );
       console.log({ products });
 
-      return res.status(200).send({ message: 'Successfully delete category' });
+      return res.status(200).send({ message: 'Successfully deleted category' });
     } catch (error) {
       next(error);
     }
