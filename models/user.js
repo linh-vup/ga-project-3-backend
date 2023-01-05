@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import mongooseHidden from 'mongoose-hidden';
 import { emailRegex } from '../lib/StringTesters.js';
+import { reviewSchema } from './reviews.js';
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema({
         password
       )
   },
-  reviews: [{ type: mongoose.Types.ObjectId, ref: 'Product' }]
+  reviews: [reviewSchema]
 });
 
 userSchema.pre('save', function encryptPassword(next) {
