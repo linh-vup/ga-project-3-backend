@@ -85,7 +85,7 @@ async function seedDb() {
   console.log('❎ Successfully deleted reviews');
 
   // create the users
-  const [user, adminUser] = await User.create([NON_ADMIN_USER, ADMIN_USER]);
+  const [user] = await User.create([NON_ADMIN_USER, ADMIN_USER]);
   console.log('👓 Successfully created admin user with id', user._id);
 
   // create WholeFoods Brands
