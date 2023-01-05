@@ -3,6 +3,7 @@ import Brand from '../models/brand.js';
 import Product from '../models/product.js';
 import User from '../models/user.js';
 import Category from '../models/category.js';
+import Reviews from '../models/reviews.js';
 
 const ADMIN_USER = {
   username: 'admin',
@@ -78,6 +79,9 @@ async function seedDb() {
   console.log('Deleting all Categories');
   await Category.deleteMany({});
   console.log('❎ Successfully deleted categories');
+  console.log('Deleting all reviews');
+  await Reviews.deleteMany({});
+  console.log('❎ Successfully deleted creviews');
 
   // create the users
   const [user, adminUser] = await User.create([NON_ADMIN_USER, ADMIN_USER]);
