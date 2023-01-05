@@ -51,4 +51,14 @@ const singleUserProfile = async (req, res, next) => {
   }
 };
 
-export default { registerUser, loginUser, singleUserProfile };
+const getAllUsers = async (_req, res, next) => {
+  try {
+    const users = await User.find();
+
+    return res.status(200).json(users);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { registerUser, loginUser, singleUserProfile, getAllUsers };
