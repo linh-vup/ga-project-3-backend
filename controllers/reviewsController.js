@@ -14,11 +14,9 @@ async function createReview(req, res, next) {
       { $push: { reviews: newReview } }
     );
 
-    console.log('PRODUCT', product);
-
     const userWithReviews = await User.findOneAndUpdate(
       { _id: req.currentUser._id },
-      { $push: { reviews: newReview._id } }
+      { $push: { reviews: newReview } }
     );
 
     console.log({ userWithReviews });
@@ -36,19 +34,36 @@ async function updateReview(req, res, next) {
     if (!review) {
       return res.status(404).send({ message: 'Review not found' });
     }
-    const updatedReview = review.set(req.body);
 
-    const finalReview = await review.save();
+    const product = await Product.findById(req.params.id);
 
-    await Product.findOneAndUpdate(
-      { _id: req.params.id },
-      { $pop: { reviews: review } },
-      { $push: { updatedReview } }
-    );
+    if (!product) {
+      return res.status(404).send({ message: 'product not found' });
+    }
 
-    // need to update on the product
+    const prodReview = product.reviews.id(req.params.reviewId);
 
-    return res.status(200).json(finalReview);
+    if (!prodReview) {
+      return res.status(404).send({ message: 'Review not found' });
+    }
+
+    if (
+      !review.reviewer.equals(req.currentUser._id) &&
+      !req.currentUser.isAdmin
+    ) {
+      return res.status(301).send({
+        message: "Unauthorised: you cannot update another user's review"
+      });
+    }
+
+    const newReview = review.set(req.body);
+    const updatedReview = prodReview.set(req.body);
+
+    const savedProd = product.save();
+
+    // need to update on the product and user
+
+    return res.status(200).json(newReview);
   } catch (err) {
     next(err);
   }
@@ -63,8 +78,6 @@ async function deleteReview(req, res, next) {
     }
 
     const review = product.reviews.id(req.params.reviewId);
-    const user = await User.findById(req.currentUser._id);
-    const userReview = user.reviews.id(req.params.reviewId);
 
     if (!review) {
       return res.status(404).send({ message: 'Review not found' });
@@ -80,13 +93,15 @@ async function deleteReview(req, res, next) {
     }
 
     review.remove();
-    userReview.remove();
 
     review.set(req.body);
-    userReview.set(req.body);
 
     const savedProduct = await product.save();
-    const saveUser = await user.save();
+
+    await User.updateOne(
+      { _id: req.currentUser._id },
+      { $pull: { 'user.reviews': { _id: req.params.reviewId } } }
+    );
 
     return res.status(200).json(savedProduct);
   } catch (err) {
