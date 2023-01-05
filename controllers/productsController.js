@@ -13,7 +13,7 @@ const getAllProducts = async (_req, res, next) => {
 };
 
 async function searchProducts(req, res, next) {
-  console.log(req.query);
+  console.log('QUERY', req.query);
   try {
     // search multiple keys:
     const { search } = req.query;
@@ -45,6 +45,8 @@ const createNewProduct = async (req, res, next) => {
       { $push: { products: product._id } }
     );
 
+    console.log('NEW PRODUCT', product._id);
+    
     await Category.findOneAndUpdate(
       { _id: product.category },
       { $push: { products: product._id } }
@@ -59,8 +61,8 @@ const createNewProduct = async (req, res, next) => {
 const getSingleProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id)
-      .populate('brand')
-      .populate('reviews.reviewer');
+      // .populate('brand')
+      .populate('reviews');
     return product
       ? res.status(200).json(product)
       : res
