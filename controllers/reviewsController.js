@@ -61,7 +61,11 @@ async function updateReview(req, res, next) {
 
     await User.findOneAndUpdate(
       { _id: req.currentUser._id },
-      { $pull: { reviews: { _id: req.params.reviewId } } },
+      { $pull: { reviews: { _id: req.params.reviewId } } }
+    );
+
+    await User.findOneAndUpdate(
+      { _id: req.currentUser._id },
       { $push: { reviews: newReview } }
     );
 
