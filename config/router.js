@@ -30,7 +30,7 @@ Router.route('/categories')
   .get(categoriesController.getAllCategories)
   .post(secureRoute, categoriesController.createNewCategory);
 
-Router.route('categories/:id').delete(
+Router.route('/categories/:id').delete(
   secureRoute,
   categoriesController.deleteCategory
 );
