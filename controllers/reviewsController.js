@@ -41,9 +41,9 @@ async function updateReview(req, res, next) {
       return res.status(404).send({ message: 'product not found' });
     }
 
-    const prodReview = product.reviews.id(req.params.reviewId);
+    const productReview = product.reviews.id(req.params.reviewId);
 
-    if (!prodReview) {
+    if (!productReview) {
       return res.status(404).send({ message: 'Review not found' });
     }
 
@@ -57,11 +57,15 @@ async function updateReview(req, res, next) {
     }
 
     const newReview = review.set(req.body);
-    const updatedReview = prodReview.set(req.body);
+    const updatedReview = productReview.set(req.body);
+
+    await User.findOneAndUpdate(
+      { _id: req.currentUser._id },
+      { $pull: { reviews: { _id: req.params.reviewId } } },
+      { $push: { reviews: newReview } }
+    );
 
     const savedProd = product.save();
-
-    // need to update on the product and user
 
     return res.status(200).json(newReview);
   } catch (err) {
@@ -98,9 +102,9 @@ async function deleteReview(req, res, next) {
 
     const savedProduct = await product.save();
 
-    await User.updateOne(
+    await User.findOneAndUpdate(
       { _id: req.currentUser._id },
-      { $pull: { 'user.reviews': { _id: req.params.reviewId } } }
+      { $pull: { reviews: { _id: req.params.reviewId } } }
     );
 
     return res.status(200).json(savedProduct);
