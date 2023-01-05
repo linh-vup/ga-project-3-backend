@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
         password
       )
   },
-  reviews: [reviewSchema]
+  reviews: [reviewSchema],
+  cloudinaryImageId: { type: String }
 });
 
 userSchema.pre('save', function encryptPassword(next) {
