@@ -51,6 +51,8 @@ Router.route('/brands/:id/products').get(
 
 Router.route('/profile/:userId').get(UserController.singleUserProfile);
 
+Router.route('/users').get(UserController.getAllUsers);
+
 Router.route('/register').post(UserController.registerUser);
 
 Router.route('/login').post(UserController.loginUser);
