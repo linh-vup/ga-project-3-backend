@@ -102,6 +102,14 @@ const deleteSingleProduct = async (req, res, next) => {
       req.currentUser.isAdmin
     ) {
       await Product.findByIdAndDelete(req.params.id);
+
+      const category = await Category.updateMany(
+        { product: { _id: req.params.id } },
+        { $unset: { product: 1 } }
+      );
+
+      console.log({ category });
+
       return res.status(200).json({ message: 'Successfully deleted product' });
     }
 
