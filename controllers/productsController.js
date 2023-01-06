@@ -52,7 +52,7 @@ const createNewProduct = async (req, res, next) => {
     );
 
     console.log('NEW PRODUCT', product._id);
-    
+
     await Category.findOneAndUpdate(
       { _id: product.category },
       { $push: { products: product._id } }
@@ -70,7 +70,8 @@ const getSingleProduct = async (req, res, next) => {
       // .populate('brand')
       .populate('reviews')
       .populate('category')
-      .populate('brand');
+      .populate('brand')
+      .populate('reviews.reviewer');
     return product
       ? res.status(200).json(product)
       : res
