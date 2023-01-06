@@ -4,7 +4,13 @@ import Category from '../models/category.js';
 
 const getAllProducts = async (_req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find()
+      .populate('category')
+      .populate('brand');
+
+    // const category = await Category.findById(req.params.id).populate(
+    //   'products'
+    // );
 
     return res.status(200).json(products);
   } catch (err) {
@@ -102,6 +108,14 @@ const deleteSingleProduct = async (req, res, next) => {
       req.currentUser.isAdmin
     ) {
       await Product.findByIdAndDelete(req.params.id);
+
+      const category = await Category.updateMany(
+        { product: { _id: req.params.id } },
+        { $unset: { product: 1 } }
+      );
+
+      console.log({ category });
+
       return res.status(200).json({ message: 'Successfully deleted product' });
     }
 
