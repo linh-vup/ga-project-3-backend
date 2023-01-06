@@ -4,7 +4,13 @@ import Category from '../models/category.js';
 
 const getAllProducts = async (_req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find()
+      .populate('category')
+      .populate('brand');
+
+    // const category = await Category.findById(req.params.id).populate(
+    //   'products'
+    // );
 
     return res.status(200).json(products);
   } catch (err) {

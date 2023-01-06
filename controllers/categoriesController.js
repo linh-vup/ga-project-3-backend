@@ -8,7 +8,12 @@ async function createNewCategory(req, res, next) {
 
       await Product.updateMany(
         { _id: newCategory.products },
-        { $push: { category: newCategory._id } }
+        {
+          $push: { category: { _id: newCategory._id } }
+        }
+        // {
+        //   $push: { category: newCategory }
+        // }
       );
 
       return res.status(201).json(newCategory);
