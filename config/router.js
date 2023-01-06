@@ -49,7 +49,7 @@ Router.route('/brands/:id/products').get(
   brandController.getAllProductsForBrand
 );
 
-Router.route('/profile/:userId').get(
+Router.route('/profile/:userId').post(
   secureRoute,
   UserController.singleUserProfile
 );
