@@ -67,8 +67,6 @@ const createNewProduct = async (req, res, next) => {
 const getSingleProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id)
-      // .populate('brand')
-      .populate('reviews')
       .populate('category')
       .populate('brand')
       .populate('reviews.reviewer');
