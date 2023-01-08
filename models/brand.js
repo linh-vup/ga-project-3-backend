@@ -5,5 +5,5 @@ const brandSchema = new mongoose.Schema({
   image: { type: String, required: true },
   products: [{ type: mongoose.Types.ObjectId, ref: 'Product' }]
 });
-
+('');
 export default mongoose.model('Brand', brandSchema);
