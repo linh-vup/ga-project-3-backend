@@ -36,24 +36,20 @@ async function searchProducts(req, res, next) {
         ]
       });
 
-    const categories = await Category.find()
-      // .populate('category')
-      .find({
-        $or: [
-          { name: { $regex: search, $options: 'i' } }
-          // { category: new RegExp(search, 'i') }
-          // { category: { $regex: search, $options: 'i' } }
-          // { brand: { $regex: search, $options: 'i' } }
-        ]
-      });
+    // const categories = await Category.find()
+    // .populate('category')
+    //   .find({
+    //     $or: [
+    //       { name: { $regex: search, $options: 'i' } }
+    // { category: new RegExp(search, 'i') }
+    // { category: { $regex: search, $options: 'i' } }
+    // { brand: { $regex: search, $options: 'i' } }
+    //     ]
+    //   });
 
-    return (
-      res
-        .status(200)
-        // .json(products)
-        // .json({ success: true, products: products, categories: categories })
-        .json({ products, categories })
-    );
+    return res.status(200).json(products);
+    // .json({ success: true, products: products, categories: categories })
+    // .json({ products, categories })
 
     // returns two objects with array of results inside
   } catch (error) {

@@ -106,7 +106,11 @@ async function seedDb() {
 
   // create Quorn Brand
   console.log('Creating Quorn brand');
-  const quornBrand = await Brand.create({ name: 'Quorn' });
+  const quornBrand = await Brand.create({
+    name: 'Quorn',
+    image:
+      'https://getlogovector.com/wp-content/uploads/2019/05/quorn-logo-vector.png'
+  });
   console.log('🍜 Created Quorn brand', quornBrand._id);
 
   // create Quorn Products
@@ -131,7 +135,11 @@ async function seedDb() {
 
   // create Violife Brand
   console.log('Creating Violife Vegan brand');
-  const violifeBrand = await Brand.create({ name: 'Violife' });
+  const violifeBrand = await Brand.create({
+    name: 'Violife',
+    image:
+      'https://violifefoods.com/wp-content/uploads/2021/03/Logo_Violife.jpg'
+  });
   console.log('🍔 Created Violife Vegan brand', violifeBrand._id);
 
   // create Violife vegan Products
