@@ -1,9 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import Router from './config/router.js';
 import { PORT } from './config/enviroment.js';
 import { connectDb } from './db/helpers.js';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use('/api', Router);
 
