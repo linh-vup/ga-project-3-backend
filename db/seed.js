@@ -90,9 +90,14 @@ async function seedDb() {
 
   // create WholeFoods Brands
   console.log('Creating whole foods brand');
-  const wholeFoodsBrand = await Brand.create({ name: 'WholeFoods' });
+  const wholeFoodsBrand = await Brand.create({
+    name: 'WholeFoods',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/a/a2/Whole_Foods_Market_201x_logo.svg'
+  });
   console.log('🍜 Created WholeFoods brand', wholeFoodsBrand._id);
 
+  
   //create food catagory
   console.log('Creating catagory cheezes');
   const categoryCheeze = await Category.create({ name: 'Cheeze' });
@@ -127,7 +132,11 @@ async function seedDb() {
 
   //Burger King vegan
   console.log('Creating Burger King Vegan brand');
-  const burgerKingBrand = await Brand.create({ name: 'Burger King Vegan' });
+  const burgerKingBrand = await Brand.create({
+    name: 'Burger King Vegan',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Burger_King_1994_logo.svg/200px-Burger_King_1994_logo.svg.png'
+  });
   console.log('🍔 Burger King Vegan bran', burgerKingBrand._id);
   console.log(`user id is ${user._id}`);
 
