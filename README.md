@@ -44,13 +44,13 @@ We were given one week to build a MERN stack app (own backend and frontend). The
 
 # Demonstration
 
-![Project Walkthrough](./src/assets/project_walkthrough1.gif 'Project Walkthrough')
-![Project Walkthrough - Reviews](./src/assets/review_walkthrough.gif 'Project Walkthrough  - Reviews')
-![Screenshot - Edit Product Information](./src/assets/edit_product.png 'Screenshot - Edit Product Information')  
+![Project Walkthrough](./assets/project_walkthrough1.gif 'Project Walkthrough')
+![Project Walkthrough - Reviews](./assets/review_walkthrough.gif 'Project Walkthrough  - Reviews')
+![Screenshot - Edit Product Information](./assets/edit_product.png 'Screenshot - Edit Product Information')  
 _Screenshot: Editing Product_  
-![Screenshot - Edit Categories Information](./src/assets/edit_categories.png 'Screenshot - Edit Categories Information')  
+![Screenshot - Edit Categories Information](./assets/edit_categories.png 'Screenshot - Edit Categories Information')  
 _Screenshot: Editing Categories_  
-![Screenshot - User Page](./src/assets/user_page.png 'Screenshot - User Page')  
+![Screenshot - User Page](./assets/user_page.png 'Screenshot - User Page')  
 _Screenshot: Editing Categories_
 
 Features:
@@ -80,8 +80,8 @@ During the holiday break before we started our project, we had decided to create
 
 After reviewing some e-commerce food websites for inspiration, we discussed the features we wanted to have, as well as stretch-goals. Using Excalidraw, we created mock-ups for the app structure and notes on models and components we’d need. We then broke down individual tasks into a team Trello board and assigned them between ourselves.
 
-![Screenshot - Excalidraw Mockup ](./src/assets/excalidraw_mockup.png 'Screenshot - Excalidraw Mockup')
-![Screenshot - Planning with Trello](./src/assets/trello_board.png 'Screenshot - Planning with Trello')
+![Screenshot - Excalidraw Mockup ](./assets/excalidraw_mockup.png 'Screenshot - Excalidraw Mockup')
+![Screenshot - Planning with Trello](./assets/trello_board.png 'Screenshot - Planning with Trello')
 
 ## Execution
 
@@ -198,7 +198,7 @@ Having worked in localisation before, a small but personally dear to me code sni
 
 After getting the main components working, I used Figma to create a more detailed design that we used as a template. We used the MUI React library a lot to easily add component styling and functionality like filter or search. Using the MUI grid system, I also made the product index and product pages responsive, with breakpoints for medium, small and very small devices
 
-![Screenshot - Figma Mock-Up](./src/assets/trello_board.png 'Screenshot - Figma Mock-Up')
+![Screenshot - Figma Mock-Up](./assets/figma_mockup.png 'Screenshot - Figma Mock-Up')
 
 _Screenshot: Figma design mock-up for product index page_
 
